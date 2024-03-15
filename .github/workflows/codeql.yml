@@ -82,18 +82,15 @@ jobs:
     #     ./location_of_script_within_repo/buildscript.sh
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
       id: analyze
+      uses: github/codeql-action/analyze@v2
       with:
         category: "/language:${{matrix.language}}"
-        upload: failure-only
-        upload-database: false
+        #upload: failure-only
+        #upload-database: false
         output: sarif-results
     # - name: Filter CodeQL SARIF
     #   uses: daniel-beck-org/remove-suppressed-findings-action@main
-    - name: Upload SARIF
-      uses: github/codeql-action/upload-sarif@v2
-
 
     - name: Dismiss alerts
       if: github.ref == 'refs/heads/main'
