@@ -19,6 +19,7 @@ import java.io.IOException;
 import jenkins.tasks.SimpleBuildStep;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundSetter;
+import org.kohsuke.stapler.verb.POST;
 
 public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
 
@@ -68,12 +69,30 @@ public class HelloWorldBuilder extends Builder implements SimpleBuildStep {
             return FormValidation.ok();
         }
 
+        @POST
+        // lgtm[jenkins/no-permission-check]
+        public FormValidation doCheckLanguage(@QueryParameter String value) {
+            if (value.matches("[a-z]+")) {
+                return FormValidation.ok();
+            }
+            return FormValidation.warning("non-alpha chars!");
+        }
+
+        // lgtm[jenkins/no-permission-check]
+        public FormValidation doCheckLanguage2(@QueryParameter String value) {
+            if (value.matches("[a-z]+")) {
+                return FormValidation.ok();
+            }
+            return FormValidation.warning("non-alpha chars!");
+        }
+
         // lgtm[jenkins/no-permission-check]
         public FormValidation doCheckName2(@QueryParameter String value, @QueryParameter boolean useFrench) {
             Jenkins.get().getItemByFullName(value);
             return FormValidation.ok();
         }
 
+        
         @Override
         public boolean isApplicable(Class<? extends AbstractProject> aClass) {
             return true;
